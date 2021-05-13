@@ -1,6 +1,8 @@
 extern crate termion;
 
 use std::io::{self, Write};
+use std::thread::sleep;
+use std::time::Duration;
 use termion::color;
 
 fn main() {
@@ -29,6 +31,8 @@ fn main() {
 
             io::stdout().flush().unwrap();
         }
+
+        sleep(Duration::from_millis(100));
         print!("\x1B[2J\x1B[1;1H"); // clear terminal screen
     }
 }
