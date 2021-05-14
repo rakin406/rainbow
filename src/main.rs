@@ -13,7 +13,7 @@ fn main() {
         .ok()
         .expect("Couldn't read line");
 
-    let mut color_code = 31;
+    let mut color_code = 31; // red
     loop {
         for c in text.chars() {
             if c == ' ' {
