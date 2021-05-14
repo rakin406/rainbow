@@ -1,13 +1,8 @@
-extern crate termion;
-
 use std::io::{self, Write};
 use std::thread::sleep;
 use std::time::Duration;
-use termion::color;
 
 fn main() {
-    let mut color = "blue";
-
     print!("Enter text: ");
     io::stdout().flush().unwrap();
 
@@ -18,27 +13,18 @@ fn main() {
         .ok()
         .expect("Couldn't read line");
 
+    let mut color_code = 31;
     loop {
         for c in text.chars() {
             if c == ' ' {
                 print!(" ");
             } else {
                 // Rainbow!
-                if color == "blue" {
-                    print!("{}{}", color::Fg(color::Blue), c);
-                    color = "green";
-                } else if color == "green" {
-                    print!("{}{}", color::Fg(color::Green), c);
-                    color = "magenta";
-                } else if color == "magenta" {
-                    print!("{}{}", color::Fg(color::Magenta), c);
-                    color = "red";
-                } else if color == "red" {
-                    print!("{}{}", color::Fg(color::Red), c);
-                    color = "yellow";
-                } else if color == "yellow" {
-                    print!("{}{}", color::Fg(color::Yellow), c);
-                    color = "blue";
+                print!("{}", color_text(&c.to_string(), color_code));
+                if color_code != 35 {
+                    color_code += 1;
+                } else {
+                    color_code = 31;
                 }
             }
 
@@ -48,4 +34,10 @@ fn main() {
         sleep(Duration::from_millis(100));
         print!("\x1B[2J\x1B[1;1H"); // clear terminal screen
     }
+}
+
+/// Return colored text
+fn color_text(text: &str, color_code: i32) -> String {
+    let colored_text = format!("\x1b[0;{}m{}{}", color_code, text, "\x1b[0m");
+    return colored_text;
 }
